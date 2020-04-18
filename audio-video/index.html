@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .bar{
+            box-sizing: border-box;
+            padding-left: 10px;
+            width: 400px;
+            height: 50px;
+            background: red;
+            position: relative;
+            /*padding: 0 10px;*/
+        }
+        .progress{
+            width: 380px;
+            height: 6px;
+            background: blueviolet;
+            position: absolute;
+            top: 22px;
+            /*margin: 0 10px;*/
+        }
+        .block{
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            top: 20px;
+            background: yellow;
+        }
+        .complete{
+            height: 6px;
+            width: 0px;
+            position: absolute;
+            top: 22px;
+            background: yellow;
+            /*transform: translateY(-50%);*/
+        }
+    </style>
+</head>
+<body>
+    <audio src="陷阱.mp3" id="audio" controls>
+<!--        <source src="./陷阱.mp3" >-->
+    </audio>
+
+    <button id="play">播放</button>
+    <button id="pause">暂停</button>
+    <button id="add">音量+</button>
+    <button id="reduce">音量-</button>
+    <button id="muse">静音</button>
+
+    <div class="bar">
+        <div class="progress"></div>
+        <div class="block"></div>
+        <div class="complete"></div>
+    </div>
+
+<script>
+    var audio=document.getElementById('audio');
+    var play=document.getElementById('play');
+    var pause=document.getElementById('pause');
+    var add=document.getElementById('add');
+    var reduce=document.getElementById('reduce');
+    var muse=document.getElementById('muse');
+
+    var oblock=document.getElementsByClassName('block')[0];
+    var ocomplete=document.getElementsByClassName('complete')[0];
+    var progress=document.getElementsByClassName('progress')[0];
+    play.onclick=function () {
+        audio.play();
+    }
+
+    pause.onclick=function () {
+        audio.pause();
+    }
+
+    add.onclick=function () {
+        var curvol=audio.volume*10;
+        if (++curvol>10){
+            curvol=10;
+        }
+        else {
+            curvol++;
+        }
+        audio.volume=curvol/10;
+    }
+
+    reduce.onclick=function () {
+        var curvol=audio.volume*10;
+        if (--curvol<0){
+            curvol=0
+        }
+        else {
+            curvol--
+        }
+        audio.volume=curvol/10;
+    }
+    muse.onclick=function () {
+        if (!audio.muted){
+            this.innerHTML="恢复";
+            audio.muted=true;
+        }
+        else{
+            this.innerHTML="静音";
+            audio.muted=false;
+        }
+    }
+
+    oblock.onmousedown=function (e) {
+        var ev=e||event;
+
+        var x=ev.clientX;
+
+
+        document.onmousemove=function (e) {
+            var ev=e||event;
+            var moveX=ev.clientX-x;
+            x=ev.clientX;
+
+            var ml=oblock.offsetLeft+moveX;
+            if (ml<=0){
+                ml=0;
+            }
+            if(ml>=progress.clientWidth){
+                ml=progress.clientWidth;
+            }
+            oblock.style.left=ml+'px';
+            ocomplete.style.width=ml+'px';
+
+            var r=ml/progress.clientWidth;
+            audio.currentTime=audio.duration*r;
+        }
+    }
+
+    document.onmouseup=function () {
+        document.onmousemove=null;
+    }
+</script>
+</body>
+</html>
