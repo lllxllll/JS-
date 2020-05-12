@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉菜单</title>
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+        }
+        li{
+            list-style: none;
+        }
+        .up{
+            overflow: hidden;
+            width: 100px;
+            height:25px;
+            color: white;
+            /*position: relative;*/
+            background: black;
+        }
+        .down{
+            display: none;
+            width: 100px;
+            height: 200px;
+            background: white;
+            border: 1px solid grey;
+        }
+        .down ::before{
+            content: ;
+            clear:both;
+        }
+        .word{
+            float: left;
+        }
+        .triangle-down{
+            /*position: absolute;*/
+            margin-top: 5px;
+            margin-right: 10px;
+            float: right;
+            width: 0px;
+            height:0px;
+            border-width: 10px;
+            border-style: solid;
+            border-color:white transparent black black;
+        }
+        .triangle-up{
+            margin-top: -5px;
+            margin-right: 10px;
+            float: right;
+            width: 0px;
+            height:0px;
+            border-width: 10px;
+            border-style: solid;
+            border-color:transparent transparent red transparent;
+        }
+        .dis-do{
+            overflow: hidden;
+            width: 100px;
+            background: white;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="up">
+        <div class="word">
+            客户服务
+        </div>
+        <div id="triangle" class="triangle-down">
+        </div>
+    </div>
+    <div class="down">
+        <ul>
+            <li>联系客服</li>
+            <li>帮助中心</li>
+            <li>知识产权保护</li>
+            <li>规则中心</li>
+        </ul>
+    </div>
+</div>
+<script>
+    Odown=document.getElementsByClassName('down')[0];
+    Oup=document.getElementsByClassName('up')[0];
+    Otriangle=document.getElementById('triangle');
+    Oup.onmouseover=Odown.onmouseover=function () {
+        Odown.style.display="block";
+        Oup.className="dis-do";
+        Otriangle.className="triangle-up"
+    }
+    Oup.onmouseout=Odown.onmouseout=function () {
+        Odown.style.display="none";
+        Oup.className="up";
+        Otriangle.className="triangle-down"
+    }
+</script>
+</body>
+</html>
